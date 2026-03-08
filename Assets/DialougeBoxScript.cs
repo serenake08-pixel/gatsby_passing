@@ -9,6 +9,11 @@ public class DialougeBoxScript : MonoBehaviour
 {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] Sprite clearBox;
+    [SerializeField] Sprite notClearBox;
+
+    private UnityEngine.UI.Image imageComponent;
+
     public TextMeshProUGUI textComponent;
     public float textSpeed;
     private Dictionary<string, List<string>> dialogues;
@@ -25,9 +30,12 @@ public class DialougeBoxScript : MonoBehaviour
 
     void Start()
     {
+        imageComponent = GetComponent<UnityEngine.UI.Image>();
+        imageComponent.sprite = clearBox;
         textSpeed = 0.02f;
         textComponent = GetComponent<TextMeshProUGUI>();
         if (textComponent == null) {textComponent = GetComponentInChildren<TextMeshProUGUI>();}
+        textComponent.text = "";
 
         dialogues = new Dictionary<string, List<string>>();
 
@@ -135,6 +143,7 @@ public class DialougeBoxScript : MonoBehaviour
 
     public IEnumerator PlayDialogue(string dialougeName)
     {
+        imageComponent.sprite = notClearBox;
         dialogueFinished = false;
         currentLines = dialogues[dialougeName];
         textComponent.text = "";
@@ -142,6 +151,7 @@ public class DialougeBoxScript : MonoBehaviour
         yield return StartCoroutine(TypeLine());
         yield return new WaitUntil(() => dialogueFinished);
         InfoBoxScript infoBox = GameObject.Find("InfoBox").GetComponent<InfoBoxScript>();
+        imageComponent.sprite = clearBox;
         if (infoBox.infoBoxes.ContainsKey(dialougeName))
         {
             yield return getInfoBox(dialougeName);

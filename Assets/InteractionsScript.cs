@@ -34,6 +34,10 @@ public class InteractionsScript : MonoBehaviour
         else{
             keyDown = false;
         }
+        if (interactionName == "bed")
+        {
+            //Debug.Log("Is Touching: " + isTouching + " Any Touching: " + anyTouching + " Is Interacting: " + isInteracting);
+        }
 
         if (keyDown && isTouching && !isInteracting)
         {
@@ -44,6 +48,7 @@ public class InteractionsScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Touching Player");
         if (collision.CompareTag("Player")) 
         {
         isTouching = true;
@@ -66,13 +71,13 @@ public class InteractionsScript : MonoBehaviour
         {
         isTouching = false;
         anyTouching = false;
-        Debug.Log("Not Touching Player");
+        //Debug.Log("Not Touching Player");
         }
     }
 
     public IEnumerator StartInteraction(string interactionName)
     {
-        Debug.Log("Interacting with " + interactionName);
+        //Debug.Log("Interacting with " + interactionName);
         DialougeBoxScript dialogueBox = GameObject.Find("DialougeBox").GetComponent<DialougeBoxScript>();
 
         if (dialogueProgressions.ContainsKey(interactionName)) //has multiple interaction times

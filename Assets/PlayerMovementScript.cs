@@ -42,7 +42,13 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (InteractionsScript.isInteracting){return;}
+        if (InteractionsScript.isInteracting)
+        {
+            animator.SetBool("IsWalking", false);
+            animator.SetFloat("InputX", 0);
+            animator.SetFloat("InputY", 0);
+            return;
+        }
         animator.SetBool("IsWalking", true);
         if (context.canceled)
         {

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class InfoBoxScript : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
+    private UnityEngine.UI.Image imageComponent;
     public TextMeshProUGUI textComponent;
     bool keyDown = false;
     [SerializeField] Sprite clearBox;
@@ -17,10 +17,11 @@ public class InfoBoxScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        textComponent = GetComponent<TextMeshProUGUI>();
+        textComponent = GetComponentInChildren<TextMeshProUGUI>();
+        textComponent.text = "";
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = clearBox;
+        imageComponent = GetComponent<UnityEngine.UI.Image>();
+        imageComponent.sprite = clearBox;
         infoBoxes = new Dictionary<string, string>();
 
         infoBoxes["books"] = "Since many people own books as an extension of the self and their values, they can also be seen as symbols of civilization and socio-economic status. This was particularly so in the 1920s, as a new demographic of business-class people dubbed “book Babbitts” began to buy more books. These books mainly were part of a get-cultured-quick scheme to match the owner’s wealth ().\n\n“Absolutely real—have pages and everything. I thought they’d be a nice durable cardboard. Matter of fact, they’re absolutely real. Pages and—Here! Lemme show you.” - Owl Eyes.";
@@ -43,9 +44,12 @@ public class InfoBoxScript : MonoBehaviour
 
     public IEnumerator ActivateInfoBox(string dialougeName)
     {
-        spriteRenderer.sprite = infoBox;
+        imageComponent.sprite = infoBox;
         textComponent.text = infoBoxes[dialougeName];
+        yield return new WaitForSeconds(2.0f);
+        Debug.Log(keyDown);
         yield return new WaitUntil(() => keyDown);
-        textComponent = GetComponent<TextMeshProUGUI>();
+        imageComponent.sprite = clearBox;
+        textComponent.text = "";
     }
 }
