@@ -24,8 +24,7 @@ public class PlayerMovementScript : MonoBehaviour
         bool keyDown = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
 
 
-
-
+        //Debug.Log("IsInteracting: " + InteractionsScript.isInteracting);
         if (keyDown && !InteractionsScript.isInteracting && !InteractionsScript.anyTouching)
         {
             StartCoroutine(EmptyInteraction());

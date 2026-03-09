@@ -77,7 +77,7 @@ public class InteractionsScript : MonoBehaviour
 
     public IEnumerator StartInteraction(string interactionName)
     {
-        //Debug.Log("Interacting with " + interactionName);
+
         DialougeBoxScript dialogueBox = GameObject.Find("DialougeBox").GetComponent<DialougeBoxScript>();
 
         if (dialogueProgressions.ContainsKey(interactionName)) //has multiple interaction times
