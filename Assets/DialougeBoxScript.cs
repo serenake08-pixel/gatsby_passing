@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
+using UnityEditor.SceneManagement;
 
 public class DialougeBoxScript : MonoBehaviour
 {
@@ -84,7 +85,7 @@ public class DialougeBoxScript : MonoBehaviour
         };
 
         dialogues["books2"] = new List<string> {
-            "Looking a little closer at the books, your Bible catches your eye",
+            "Looking a little closer at the books, your Bible catches your eye.",
             "As you touch it, you see the struggle of a young girl who was made to work by a religious household, in exchange for a roof over her head.",
             "She wanted to be her own person, and so she left.",
             "You put it back on the shelf. You won't be going near that for a while."
@@ -114,8 +115,8 @@ public class DialougeBoxScript : MonoBehaviour
         };  
 
         dialogues["vainity2"] = new List<string> {
-            "Your reflection in the mirror looks cracked and distorted.",
-            "Gosh, what happened to this mirror?",
+            "Your reflection in the mirror is looking a little worse for wear.",
+            "Gosh, what happened to it?",
             "It needs to be replaced right away!",
             "You'll have to deal with this after the party, though. But it must be fixed before you have any guests over."
         };  
@@ -139,16 +140,106 @@ public class DialougeBoxScript : MonoBehaviour
             "There's a picture of a man holding a cricket bat along with a group of people.",
             "The background is from the University of Oxford.",
             "How nice. You let it rest there."
+        }; 
+
+        dialogues["ending"] = new List<string> {
+            "You have finished tidying up, and you leave for the party, albeit feeling a little shaky."
         };  
 
+        dialogues["hello2020"] = new List<string> {
+            "You wake up.",
+            "Good morning sleepyhead!",
+            "You have a bunch of work ahead of you today to make a room tour video.",
+            "But first, you’ll be doing some final checks to make sure everything is set before filming."
+        };
+
+        dialogues["empty20201"] = new List<string> {"Just here for the vibes."};
+        dialogues["empty20202"] = new List<string> {"Hellooo? You sleeping?"};
+        dialogues["empty20203"] = new List<string> {"I know this room is so main character energy it’ll naturally put you in a state of awe, but get a move on!"};
+
+        dialogues["bed2020"] = new List<string> {
+            "You admire the fluffy and neat white comforter, topped with decorative pillows.",
+            "It’s so clean girl and you love it."
+        };
+
+        dialogues["ringlight"] = new List<string>{
+            "Where you do livestreams and film videos.",
+            "Quality matters for all your loyal followers who look up to you,",
+            "and also for your younger self!"
+        };
+
+        dialogues["mirror"] = new List<string>{
+            "It's you!",
+            "Mwah!"
+        };
+
+        dialogues["speaker"] = new List<string>{
+            "A speaker to play music! Here, let’s put something on.",
+        };
+
+        dialogues["package"] = new List<string>{
+            "A PR package! You’ve been waiting for this to arrive.",
+            "You open the package…",
+            "It's a new top.",
+            "It's very 2016s-core!",
+            "You'll be making a video on this."
+        };
+
+        dialogues["closet"] = new List<string>
+        {
+            "A mound of clothes immediately falls out when you open your closet.",
+            "You should probably do something about this situation.",
+            "But you need all these clothes to make outfits with!",
+            "…Let’s just fix this up for now.",
+            "After much pushing and shoving, you manage to pack all the clothes back in.",
+            "Let's not try that again."    
+        };
+
+        dialogues["closetUGH"] = new List<string>
+        {
+            "This time, even more clothes fall out the closet.",
+            "Oh, now look what you've gone and done!",
+            "After much pushing and shoving, you manage to pack all the clothes back in.",
+            "Seriously, don't do that again."
+        };
+
+        dialogues["phone"] = new List<string>{
+            "You pull up the camera and take a few selfies.",
+            "Shoot, you forgot to put the beauty filter on. You haven’t been feeling too well in the past few days.",
+            "You delete the photos. They weren't really screaming YOU you anyways.",
+            "Ughhh so annoying."
+        };
+
+        dialogues["wallet"] = new List<string>{
+            "Your purse holds assorted makeup and your wallet.",
+            "Isn’t it funny? You’re actually in debt right now.",
+            "The influencer income is never stable, and much of the money you do get goes to new videos.",
+            "But there are other times when you’re rolling in money, so you try to tell yourself not to worry about it!",
+            "You're just going to have to try harder."
+        };
+
+        dialogues["ending2020"] = new List<string> {
+            "You record and start editing the video after your start to the day."
+        }; 
     }
 
     IEnumerator Start()
     {
         InteractionsScript.isInteracting = true;
-        yield return StartCoroutine(PlayDialogue("hello1"));
-        yield return GameObject.Find("Main Camera").GetComponent<CameraScript>().ShakeCamera();
-        yield return StartCoroutine(PlayDialogue("hello2"));
+
+
+        if (OverallScript.is2020)
+        {
+            yield return StartCoroutine(PlayDialogue("hello2020"));
+
+        }
+        else
+        {
+            yield return StartCoroutine(PlayDialogue("hello1"));
+            yield return GameObject.Find("Main Camera").GetComponent<CameraScript>().ShakeCamera();
+            yield return StartCoroutine(PlayDialogue("hello2"));
+        }
+
         InteractionsScript.isInteracting = false;
     }
 

@@ -18,6 +18,15 @@ public class PlayerMovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (InteractionsScript.isInteracting)
+        {
+            rb.linearVelocity = Vector2.zero;
+            animator.SetBool("IsWalking", false);
+            animator.SetFloat("InputX", 0);
+            animator.SetFloat("InputY", 0);
+            return;
+        }
+
         rb.linearVelocity = m*speed;
 
         //the empty interaction start only works here blublublublublub
@@ -35,7 +44,14 @@ public class PlayerMovementScript : MonoBehaviour
     {
         InteractionsScript.isInteracting = true;
         DialougeBoxScript dialogueBox = GameObject.Find("DialougeBox").GetComponent<DialougeBoxScript>();
+        if (OverallScript.is2020)
+        {
+            yield return StartCoroutine(dialogueBox.PlayDialogue("empty2020" + Random.Range(1,4).ToString()));
+        }
+        else
+        {
         yield return StartCoroutine(dialogueBox.PlayDialogue("empty" + Random.Range(1,4).ToString()));
+        }
         InteractionsScript.isInteracting = false;
     }
 
