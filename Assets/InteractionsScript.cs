@@ -25,7 +25,8 @@ public class InteractionsScript : MonoBehaviour
     {
         //initialize dialouge Progressions!
         dialogueProgressions["books"] = 1;
-        dialogueProgressions["vainity"] = 1;
+        dialogueProgressions["cassidy"] = 1;
+        dialogueProgressions["letters"] = 1;
     }
 
     // Update is called once per frame
@@ -85,16 +86,18 @@ public class InteractionsScript : MonoBehaviour
 
         if (dialogueProgressions.ContainsKey(interactionName)) //has multiple interaction times
         {   
-            if (interactionName == "books" && dialogueProgressions[interactionName] >= 3) //books special case
-            {
-                yield return StartCoroutine(dialogueBox.PlayDialogue("empty1"));
-            }
-            else if (dialogueProgressions[interactionName] >= 3) //exhausted interactions.
+            if (dialogueProgressions[interactionName] >= 3) //exhausted interactions.
             {
                 yield return StartCoroutine(dialogueBox.PlayDialogue(interactionName + 2));
             }
+
             else {
-                interactedWith.Add(interactionName+ interactionName + dialogueProgressions[interactionName].ToString());
+                if ((interactionName == "cassidy" && dialogueProgressions[interactionName] >= 2) || (interactionName == "letters" && dialogueProgressions[interactionName] >= 2)){
+                    
+                }
+                else{
+                    interactedWith.Add(interactionName + dialogueProgressions[interactionName].ToString());
+                }
                 yield return StartCoroutine(dialogueBox.PlayDialogue(interactionName + dialogueProgressions[interactionName].ToString()));
             }
             dialogueProgressions[interactionName]++;
@@ -116,13 +119,6 @@ public class InteractionsScript : MonoBehaviour
                     yield return GameObject.Find("Main Camera").GetComponent<CameraScript>().ShakeCamera();
                 } 
             }
-
-            if (interactionName == "vainity" && dialogueProgressions[interactionName] >= 2) //vainity special case
-            {
-                yield return StartCoroutine(dialogueBox.PlayDialogue("empty1"));
-                isInteracting = false;
-                yield break;
-            }
             
 
             if (!interactedWith.Contains(interactionName))//this takes care of adding more interactions
@@ -136,11 +132,10 @@ public class InteractionsScript : MonoBehaviour
         if (interactionName == "phonograph" || interactionName == "speaker")
         {
             musicPlayer.Play();
+            yield return new WaitForSeconds(0.5f);
         }
 
-        if (interactionName == "package"){
-            GameObject.Find("package").SetActive(false);
-        }
+        
 
         if (newSprite != null)
         {
@@ -148,8 +143,10 @@ public class InteractionsScript : MonoBehaviour
             myRenderer.sprite = newSprite;
         }
 
+        Debug.Log("Interacted With: " + string.Join(", ", interactedWith));
+
         if (!OverallScript.is2020){
-            if (interactedWith.Count >=13)
+            if (interactedWith.Count >=12)
             {
             yield return new WaitForSeconds(1f);
             Debug.Log("DONE!!!!!");
@@ -157,7 +154,7 @@ public class InteractionsScript : MonoBehaviour
             interactedWith = new List<string>();
             yield return StartCoroutine(dialogueBox.PlayDialogue("ending"));
             OverallScript bigScript = GameObject.Find("OverallScript").GetComponent<OverallScript>();
-            StartCoroutine(bigScript.SwitchTo2020());
+            yield return StartCoroutine(bigScript.SwitchTo2020());
             } 
         }
         else {
@@ -166,12 +163,17 @@ public class InteractionsScript : MonoBehaviour
             yield return new WaitForSeconds(1f);
             Debug.Log("DONE!!!!!");
 
+            interactedWith = new List<string>();
             yield return StartCoroutine(dialogueBox.PlayDialogue("ending2020"));
             OverallScript bigScript = GameObject.Find("OverallScript").GetComponent<OverallScript>();
-            StartCoroutine(bigScript.EndGame());
+            yield return StartCoroutine(bigScript.EndGame());
             } 
         }
-        
         isInteracting = false;
+
+        if (interactionName == "package"){
+            GameObject.Find("package").SetActive(false);
+        }
+        
     }
 }

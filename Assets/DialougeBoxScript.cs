@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
-using UnityEditor.SceneManagement;
+//using UnityEditor.SceneManagement;
 
 public class DialougeBoxScript : MonoBehaviour
 {
@@ -23,19 +23,13 @@ public class DialougeBoxScript : MonoBehaviour
     public Boolean dialogueFinished = true;
     public Boolean typing = false;
 
-    //below are booleans that might be used for a different script.
-    private List<string> gold;
-    private List<string> silver;
-    private List<string> bronze;
-    private List<string> artifacts;
-
     void Awake()
     {
         imageComponent = GetComponent<UnityEngine.UI.Image>();
         Debug.Log("imageComponent found: " + imageComponent);
         Debug.Log("Script is on: " + gameObject.name);
         imageComponent.sprite = clearBox;
-        textSpeed = 0.02f;
+        textSpeed = 0.01f;
         textComponent = GetComponent<TextMeshProUGUI>();
         if (textComponent == null) {textComponent = GetComponentInChildren<TextMeshProUGUI>();}
         textComponent.text = "";
@@ -86,15 +80,19 @@ public class DialougeBoxScript : MonoBehaviour
 
         dialogues["books2"] = new List<string> {
             "Looking a little closer at the books, your Bible catches your eye.",
-            "As you touch it, you see the struggle of a young girl who was made to work by a religious household, in exchange for a roof over her head.",
-            "She wanted to be her own person, and so she left.",
-            "You put it back on the shelf. You won't be going near that for a while."
+            "As you touch it, you see the memories of a black girl's struggle of wanting to be her own person.",
+            "And so, she started passing as white.",
+            "You put it back on the shelf. You won't be going near that."
         };
 
-        dialogues["cassidy"] = new List<string> {
+        dialogues["cassidy1"] = new List<string> {
             "'Hopalong Cassidy'. The book details a self-improvement schedule.",
             "The list includes practicing poise and elocution, exercising, and saving money.",
-            "All that hard work of a man who reinvented himself from the group up…let’s tuck this book away."
+            "All that hard work of a man who reinvented himself from the ground up...you tuck the book away."
+        };
+
+        dialogues["cassidy2"] = new List<string> {
+            "The book seems to be humming in the drawer."
         };
 
         dialogues["lamp"] = new List<string> {
@@ -105,33 +103,37 @@ public class DialougeBoxScript : MonoBehaviour
             "See, when I turn it on, the scarab starts to glow."
         };
 
-        
-        dialogues["vainity1"] = new List<string> {
+
+        dialogues["vainity"] = new List<string> {
             "It's you!",
             "There are also various beauty products here.",
             "A particular red lipstick catches your eye.",
-            "This poor thing has been through so many lies and smiles. The lies and smiles of a black woman passing as white, who believes it is the worth the money it brings her.",
-            "You take the lipstick and discard it.",
+            "As you hold it, you see a memory of a woman who believed that rejecting her racial identity was worth the money it brought her.",
+            "You discard the lipstick."
         };  
 
         dialogues["vainity2"] = new List<string> {
             "Your reflection in the mirror is looking a little worse for wear.",
             "Gosh, what happened to it?",
-            "It needs to be replaced right away!",
-            "You'll have to deal with this after the party, though. But it must be fixed before you have any guests over."
+            "You're going to have to deal with this after the party."
         };  
 
-        dialogues["letters"] = new List<string> {
-            "Letters detailing the longing of the woman who realized she lost something in herself too late.",
-            "Another letter from the man who was so confident that wealth and the American Dream would bring him back to his lover.",
+        dialogues["letters1"] = new List<string> {
+            "You open the letters.",
+            "One details the longing of a woman who realized she lost her racial identity too late.",
+            "Another is from a man who was confident that the American Dream would bring him back to his lover.",
             "These letters don't make you feel too good.",
             "You toss them in the trash."
+        };
+
+        dialogues["letters2"] = new List<string> {
+            "The letters look unscathed in the trash can."
         };
 
         dialogues["telephone"] = new List<string> {
             "You don't keep the telephone in the bedroom.",
             "This isn't even the same telephone you have!",
-            "You pick it up. It occurs to you that this was the telephone of the man who worked as a bootlegger to make his fortune.",
+            "You pick it up. It occurs to you that this was the telephone of the man who worked as a bootlegger, distributing alcohol to make his fortune.",
             "...You put it down."
         };  
 
@@ -139,11 +141,11 @@ public class DialougeBoxScript : MonoBehaviour
             "You open the elegant pocketwatch.",
             "There's a picture of a man holding a cricket bat along with a group of people.",
             "The background is from the University of Oxford.",
-            "How nice. You let it rest there."
+            "You let it rest there. Maybe whoever owns it will want it back someday."
         }; 
 
         dialogues["ending"] = new List<string> {
-            "You have finished tidying up, and you leave for the party, albeit feeling a little shaky."
+            "You have finished tidying up, and you leave for the party, albeit feeling a little shaky from your unusual morning."
         };  
 
         dialogues["hello2020"] = new List<string> {
@@ -163,7 +165,7 @@ public class DialougeBoxScript : MonoBehaviour
         };
 
         dialogues["ringlight"] = new List<string>{
-            "Where you do livestreams and film videos.",
+            "This is where you do livestreams and film videos.",
             "Quality matters for all your loyal followers who look up to you,",
             "and also for your younger self!"
         };
@@ -198,7 +200,7 @@ public class DialougeBoxScript : MonoBehaviour
         dialogues["closetUGH"] = new List<string>
         {
             "This time, even more clothes fall out the closet.",
-            "Oh, now look what you've gone and done!",
+            "Oh, now look what you just had to do!",
             "After much pushing and shoving, you manage to pack all the clothes back in.",
             "Seriously, don't do that again."
         };
@@ -206,8 +208,7 @@ public class DialougeBoxScript : MonoBehaviour
         dialogues["phone"] = new List<string>{
             "You pull up the camera and take a few selfies.",
             "Shoot, you forgot to put the beauty filter on. You haven’t been feeling too well in the past few days.",
-            "You delete the photos. They weren't really screaming YOU you anyways.",
-            "Ughhh so annoying."
+            "You delete the photos. They weren't really screaming YOU you anyways."
         };
 
         dialogues["wallet"] = new List<string>{
@@ -239,7 +240,7 @@ public class DialougeBoxScript : MonoBehaviour
             yield return GameObject.Find("Main Camera").GetComponent<CameraScript>().ShakeCamera();
             yield return StartCoroutine(PlayDialogue("hello2"));
         }
-
+        yield return null;
         InteractionsScript.isInteracting = false;
     }
 

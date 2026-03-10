@@ -24,6 +24,7 @@ public class PlayerMovementScript : MonoBehaviour
             animator.SetBool("IsWalking", false);
             animator.SetFloat("InputX", 0);
             animator.SetFloat("InputY", 0);
+            m = Vector2.zero;
             return;
         }
 
